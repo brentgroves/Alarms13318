@@ -34,11 +34,9 @@ function CheckForQuarterHour() {
     min === '00' ||
     min === '15' ||
     min === '30' ||
-         // (min === '40') ||
+         // (min === '54') ||
     min === '45'
   ) {
-           // Every15Mins(16,'00');
-
     Every15Mins(transDate);
   }
 }
