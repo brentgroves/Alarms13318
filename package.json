@@ -19,6 +19,11 @@
   "homepage": "https://github.com/brentgroves/Periodic11318#readme",
   "dependencies": {
     "mqtt": "^3.0.0",
-    "soap": "^0.30.0"
+    "soap": "^0.30.0",
+    "node-datetime": "^2.1.2"
+  },
+  "devDependencies": {
+    "eslint": "^6.7.1",
+    "prettier": "^1.19.1"
   }
 }
