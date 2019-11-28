@@ -12,23 +12,35 @@ var mqttClient;
 // GA FWD Knuckle/FWD BE 517
 // Plex Workcenter: 61420
 
-function Every15Mins(transDate) {
-  console.log(`Every15Mins: ${transDate}`);
+function Alarm1(transDate) {
+  console.log(`Alarm1: ${transDate}`);
 
   let msg = {
     TransDate: transDate,
   };
   let msgString = JSON.stringify(msg);
   console.log(msg);
-  mqttClient.publish('Periodic13318', msgString);
+  mqttClient.publish('Alarm13318-1', msgString);
   return;
 }
 
-function CheckForQuarterHour() {
+function Alarm2(transDate) {
+  console.log(`Alarm1: ${transDate}`);
+
+  let msg = {
+    TransDate: transDate,
+  };
+  let msgString = JSON.stringify(msg);
+  console.log(msg);
+  mqttClient.publish('Alarm13318-2', msgString);
+  return;
+}
+
+function CheckForAlarm() {
   var dt = datetime.create();
   var transDate = dt.format('Y-m-d H:M');
   var min = dt.format('M');
-  console.log(`CheckForQuarterHour: ${min}`);
+  console.log(`CheckForAlarm: ${min}`);
 
   if (
     min === '00' ||
@@ -37,14 +49,24 @@ function CheckForQuarterHour() {
          // (min === '54') ||
     min === '45'
   ) {
-    Every15Mins(transDate);
+    Alarm1(transDate);
   }
+  if (
+    min === '02' ||
+    min === '17' ||
+    min === '32' ||
+         // (min === '54') ||
+    min === '47'
+  ) {
+    Alarm2(transDate);
+  }
+
 }
 
 function main() {
   try {
     mqttClient = mqtt.connect(config.MQTT);
-    setInterval(CheckForQuarterHour, 1000 * 60);
+    setInterval(CheckForAlarm, 1000 * 60);
   } catch (err) {
     console.log('Error !!!', err);
   }
