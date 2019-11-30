@@ -12,8 +12,8 @@ var mqttClient;
 // GA FWD Knuckle/FWD BE 517
 // Plex Workcenter: 61420
 
-function Alarm1(transDate) {
-  console.log(`Alarm1: ${transDate}`);
+function SoundAlarm1(transDate) {
+  console.log(`SoundAlarm1: ${transDate}`);
 
   let msg = {
     TransDate: transDate,
@@ -24,8 +24,9 @@ function Alarm1(transDate) {
   return;
 }
 
-function Alarm2(transDate) {
-  console.log(`Alarm1: ${transDate}`);
+function SoundAlarm2(transDate) {
+  // console.log(`SoundAlarm2: ${this.transDate}`);
+  console.log(`SoundAlarm2: ${transDate}`);
 
   let msg = {
     TransDate: transDate,
@@ -36,11 +37,11 @@ function Alarm2(transDate) {
   return;
 }
 
-function CheckForAlarm() {
+function CheckForAlarm1() {
   var dt = datetime.create();
   var transDate = dt.format('Y-m-d H:M');
   var min = dt.format('M');
-  console.log(`CheckForAlarm: ${min}`);
+  console.log(`CheckForAlarm1: ${min}`);
 
   if (
     min === '00' ||
@@ -49,24 +50,20 @@ function CheckForAlarm() {
          // (min === '54') ||
     min === '45'
   ) {
-    Alarm1(transDate);
+    console.log("Set Alarm2 for 2 minutes from now.")
+      let params = {
+          transDate:transDate
+      }
+    // setInterval(SoundAlarm2.bind(params), 1000 * 60 * 2); // 2 mins past alarm1
+    setTimeout(SoundAlarm2, 1000 * 60 * 2,transDate); // 2 mins past alarm1
+    SoundAlarm1(transDate);
   }
-  if (
-    min === '02' ||
-    min === '17' ||
-    min === '32' ||
-         // (min === '54') ||
-    min === '47'
-  ) {
-    Alarm2(transDate);
-  }
-
 }
 
 function main() {
   try {
     mqttClient = mqtt.connect(config.MQTT);
-    setInterval(CheckForAlarm, 1000 * 60);
+    setInterval(CheckForAlarm1, 1000 * 60);
   } catch (err) {
     console.log('Error !!!', err);
   }
